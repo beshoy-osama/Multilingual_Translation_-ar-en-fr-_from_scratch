@@ -1,0 +1,6 @@
+datasets
+gradio
+sacrebleu
+sentencepiece
+torch
+huggingface_hub
