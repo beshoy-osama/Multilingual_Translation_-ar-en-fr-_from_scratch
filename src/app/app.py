@@ -375,17 +375,6 @@ def translate(text: str, src_lang_display: str, tgt_lang_display: str,
 
 LANG_CHOICES = list(LANG_DISPLAY.keys())
 
-EXAMPLES = [
-    ["Hello, how are you?",                      "English", "Arabic",  4],
-    ["Hello, how are you?",                      "English", "French",  4],
-    ["مرحبا، كيف حالك؟",                          "Arabic",  "English", 4],
-    ["مرحبا، كيف حالك؟",                          "Arabic",  "French",  4],
-    ["Bonjour, comment vas-tu ?",                "French",  "English", 4],
-    ["Bonjour, comment vas-tu ?",                "French",  "Arabic",  4],
-    ["The conference starts at 9 AM.",           "English", "French",  4],
-    ["الاجتماع سيبدأ في الساعة التاسعة صباحاً.", "Arabic",  "English", 4],
-]
-
 with gr.Blocks(title="Multilingual Translator  ar ↔ en ↔ fr") as demo:
 
     gr.Markdown("""
@@ -412,15 +401,6 @@ with gr.Blocks(title="Multilingual Translator  ar ↔ en ↔ fr") as demo:
                                   label="Beam Size  (higher = better quality, slower)")
         swap_btn      = gr.Button("🔄 Swap Languages")
         translate_btn = gr.Button("Translate ▶", variant="primary")
-
-    gr.Examples(
-        examples=EXAMPLES,
-        inputs=[src_text, src_lang, tgt_lang, beam_slider],
-        outputs=tgt_text,
-        fn=translate,
-        cache_examples=False,
-        label="Quick Examples",
-    )
 
     # ── events ───────────────────────────────────────────────────────────────
     translate_btn.click(
