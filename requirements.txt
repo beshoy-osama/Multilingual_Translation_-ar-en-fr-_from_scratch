@@ -1,6 +1,14 @@
-datasets
-gradio
-sacrebleu
-sentencepiece
+# Core ML
 torch
-huggingface_hub
+sentencepiece
+ 
+# Data
+datasets
+sacrebleu
+ 
+# App
+gradio==4.44.1
+fastapi==0.112.0
+starlette==0.37.2
+uvicorn==0.30.6
+huggingface_hub==0.23.4

@@ -55,16 +55,21 @@ The target language token is prepended to the source — this is how the model k
 
 ## 🗃️ Data
 
-**Source:** [Helsinki-NLP/opus-100](https://huggingface.co/datasets/Helsinki-NLP/opus-100) via HuggingFace Datasets, streamed to avoid full downloads.
+| Source                | Languages    | Link                                                                 |
+| --------------------- | ------------ | -------------------------------------------------------------------- |
+| Helsinki-NLP/opus-100 | ar↔en, en↔fr | [HuggingFace](https://huggingface.co/datasets/Helsinki-NLP/opus-100) |
+| Helsinki-NLP/un_pc    | ar↔fr        | [HuggingFace](https://huggingface.co/datasets/Helsinki-NLP/un_pc)    |
 
-| Direction | Pairs (max) |
-| --------- | ----------- |
-| ar → en   | 15,000      |
-| en → ar   | 7,500       |
-| ar → fr   | 15,000      |
-| fr → ar   | 7,500       |
-| en → fr   | 15,000      |
-| fr → en   | 7,500       |
+All datasets are streamed via HuggingFace Datasets to avoid full downloads. The ar-fr direction is not available in opus-100 — the downloader automatically falls back to the UN Parallel Corpus (un_pc) for that pair.
+
+| Direction | Source   | Pairs (max) |
+| --------- | -------- | ----------- |
+| ar → en   | opus-100 | 15,000      |
+| en → ar   | opus-100 | 7,500       |
+| ar → fr   | un_pc    | 15,000      |
+| fr → ar   | un_pc    | 7,500       |
+| en → fr   | opus-100 | 15,000      |
+| fr → en   | opus-100 | 7,500       |
 
 **Train / Val / Test split:** 80% / 10% / 10% — stratified by language pair.
 
@@ -128,14 +133,36 @@ A shared SentencePiece BPE tokenizer trained across all three languages.
 
 ## 🚀 Running the Gradio App Locally
 
-### 1. Install dependencies
+### 1. Clone the repository
 
 ```bash
-pip install "gradio==4.44.1" "fastapi==0.112.0" "starlette==0.37.2" \
-            "huggingface_hub==0.23.4" torch sentencepiece
+git clone https://github.com/your-username/multilingual-translation.git
+cd multilingual-translation
 ```
 
-### 2. Set paths in `app.py`
+### 2. Create and activate a virtual environment
+
+**Windows:**
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate.bat
+```
+
+**macOS / Linux:**
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Set paths in `app.py`
 
 Open `src/app/app.py` and edit the USER CONFIGURATION block at the top:
 
@@ -144,11 +171,11 @@ SPM_MODEL_PATH  = "path/to/tokenizer/translation_spm.model"
 CHECKPOINT_PATH = "path/to/checkpoints/best_model.pt"
 ```
 
-### 3. Run
+### 5. Run
 
 ```bash
 cd src/app
-py app.py
+python app.py
 ```
 
 Then open **http://127.0.0.1:7860** in your browser.
@@ -180,15 +207,19 @@ RESUME_CHECKPOINT    = None    # e.g. Path("checkpoints/epoch_03.pt")
 
 ## 📦 Dependencies
 
-| Package                   | Purpose                    |
-| ------------------------- | -------------------------- |
-| `torch`                   | Model, training, inference |
-| `sentencepiece`           | BPE tokenizer              |
-| `datasets`                | HuggingFace data streaming |
-| `sacrebleu`               | BLEU evaluation            |
-| `gradio==4.44.1`          | Local demo UI              |
-| `fastapi==0.112.0`        | Gradio backend             |
-| `huggingface_hub==0.23.4` | HuggingFace integration    |
+All dependencies are pinned in `requirements.txt`. Key packages:
+
+| Package           | Version | Purpose                    |
+| ----------------- | ------- | -------------------------- |
+| `torch`           | latest  | Model, training, inference |
+| `sentencepiece`   | latest  | BPE tokenizer              |
+| `datasets`        | latest  | HuggingFace data streaming |
+| `sacrebleu`       | latest  | BLEU evaluation            |
+| `gradio`          | 4.44.1  | Local demo UI              |
+| `fastapi`         | 0.112.0 | Gradio backend             |
+| `starlette`       | 0.37.2  | ASGI framework             |
+| `uvicorn`         | 0.30.6  | ASGI server                |
+| `huggingface_hub` | 0.23.4  | HuggingFace integration    |
 
 ---
 
